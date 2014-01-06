@@ -1,18 +1,29 @@
 require 'spec_helper'
 
 describe "RequestForComment" do
-  describe "initialize" do
-    it "requires a github user/repo"
-    it "requires a branch to comment upon"
-    it "requires a comment"
-    it "has the option to remove a previous comment on the PR"
+  use_vcr_cassette "rfc"
+
+  let :rfc do
+    RequestForComment.new user: "bensheldon",
+      repo: "request_for_comment",
+      oauth_token: 'FAKETOKEN'
+  end
+
+  it "is initialized" do
+    expect( rfc ).to be_an_instance_of(RequestForComment)
+  end
+
+  describe "get_pull_request" do
+    it "returns a pull request" do
+      puts rfc.post_comment('spec_test', "my comment")
+    end
   end
 
   describe "comment_on_pr" do
     it "fetches a pull request ID from github corresponding to the branch"
     it "posts a comment to Pull Request"
 
-    describe "option[:remove_previous] == true" do
+    describe "option[:remove_prev] == true" do
       it "fetches a list of existing comments on the pull request"
 
       context "when a previous comment exists" do
